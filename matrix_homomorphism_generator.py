@@ -60,15 +60,9 @@ def phi(phi_matrix, group, n, t, p):
     for symbol, code in symbol_code_pairs.items():
         matrix = matrix.replace(symbol, code)
 
-    # elementwise_phi = lambda g: np.array(it.starmap(lambda x: x%p , eval(matrix)))
-
-    # print("kita")
-    # print(elementwise_phi([[1, 0], [0, 1]]))
-
     print("Calculating phi(GL" + str(n) + "(" + str(p) + "))")
     out_group =set()
     for g in tqdm(group, total=len(group)):
-        # matrix_values = g
         phi_of_g = tuple(map(tuple, (np.array(eval(matrix)) % p).tolist()))
         out_group.add(phi_of_g)
         
