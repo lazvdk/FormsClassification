@@ -1,8 +1,7 @@
 import numpy as np
-from itertools import product, count, repeat, starmap
+from itertools import *
 from tqdm import tqdm
 import operator
-from math import floor
 
 def GL(n, p):
     GLnp = []
@@ -16,10 +15,6 @@ def GL(n, p):
     return GLnp
 
 def vector_space(t, p):
-    # counter = count()
-    # vectors = product([next(counter) for _ in range(p)], repeat=t)
-    
-    # return dict(zip(count(), zip(repeat(False), vectors)))
     return list(repeat(False, p**t))
 
 def vector_to_index(vector, p, t):
