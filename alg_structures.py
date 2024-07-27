@@ -6,7 +6,7 @@ import operator
 def GL(n, p):
     GLnp = []
     total_combinations = p ** (n * n)
-    print("Generating GL(" + str(n) + ", " + str(p) + ")...")
+    print(f'Generating GL{n}(F_{p})...')
     for elements in tqdm(product(range(p), repeat=n*n), total=total_combinations):
         matrix = np.array(elements).reshape((n, n))
         if (round(np.linalg.det(matrix)) % p) != 0:
