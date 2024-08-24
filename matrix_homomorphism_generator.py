@@ -4,13 +4,15 @@ import sympy as sp
 import numpy as np
 from math import comb, prod
 from tqdm import tqdm
+from functools import reduce
+from itertools import combinations_with_replacement as multisets
 
 def homogenous_polynomial(n, d):
     t= comb((d+n-1), d)
     variables = ["x" + str(_) for _ in range(1, n+1)]
     coefficients = ["c" + str(_) for _ in range(1, t+1)]
     
-    monomials_without_coeffs = map("*".join, (it.combinations_with_replacement(variables, r=d)))
+    monomials_without_coeffs = map("*".join, (multisets(variables, r=d)))
     
     full_monomials = map("*".join, (zip(coefficients, monomials_without_coeffs)))
     
@@ -49,7 +51,7 @@ def phi_matrix(n, d):
 
     return str(matrix)
 
-def phi(phi_matrix, group, n, t, p):
+def phid(phi_matrix, group, n, t, p):
     matrix = phi_matrix
     counter = it.count(start=1)
     indices = list(it.starmap(lambda x, y: str(x) + str(y), it.product([next(counter) for _ in range(n)], repeat=2)))
@@ -60,11 +62,29 @@ def phi(phi_matrix, group, n, t, p):
     for symbol, code in symbol_code_pairs.items():
         matrix = matrix.replace(symbol, code)
 
-    print("Calculating phi(GL" + str(n) + "(" + str(p) + "))")
-    out_group =set()
-    for g in tqdm(group, total=len(group)):
+    out_group = set()
+    for g in group:
         phi_of_g = tuple(map(tuple, (np.array(eval(matrix)) % p).tolist()))
         out_group.add(phi_of_g)
         
     return out_group
 
+# def flatten(mat, dim):
+#     coeffs = []
+#     for x in multisets([i for i in range(len(mat))], dim):
+
+def phi(g, d):
+    phi_of_g = []
+    for monomial in multisets(g, d):
+        # phi_of_g.append(reduce(np.add, offset(np.tensordot(*(monomial), 0))))
+        phi_of_g.append(reduce(np.convolve, monomial))
+    return np.transpose(phi_of_g)
+# def grujalgoritam(g, d):
+    # return (np.linalg.matrix_power(g, d))[]
+# G = [[[2, 1, 3], [2, 3, 2], [1, 3, 2]]]
+# print(phi(G[0], 2)%3)
+# print(phid(phi_matrix(3, 2), G, 3, 6,3))
+# print(np.convolve([1, 2, 3], [2, 3, 2]))
+# print(phi([[1, 2], [2, 3]], 2)%3)
+# print(np.array([3, 1]) @ np.array([[1], [2]]))
+# print(flatten(np.linalg.outer([1, 2, 3], [2, 3, 2]), 3))
