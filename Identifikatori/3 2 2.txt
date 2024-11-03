@@ -1,0 +1,19 @@
+
+Postoji 4 razlicitih identifikatora.
+
+7
+0 : 2
+1 : 6
+
+35
+0 : 4
+1 : 4
+
+21
+0 : 6
+1 : 2
+
+1
+0 : 8
+1 : 0
+
